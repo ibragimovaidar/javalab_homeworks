@@ -15,10 +15,13 @@ public class Main {
 
 		WordStatsServiceImpl wordStatsService = context.getBean(WordStatsServiceImpl.class);
 		StatsRecord statsRecord = wordStatsService.calculateStats(new String[]{
-				"C:\\Users\\ibrag\\Documents\\education\\ibragimov_itis_2021_lab\\01. SimpleSpringApp\\src\\main\\resources\\test.txt",
 				"C:\\Users\\ibrag\\Documents\\education\\sample1.txt"});
 
 		List<WordStat> result = wordStatsService.findAllByStatsRecordIdDescLimit(statsRecord.getId(), 10);
-		System.out.println(result);
+
+		System.out.println("Топ 10 часто встречающихся слов:");
+		for (WordStat wordStat: result){
+			System.out.println(wordStat.getWord() + " - " + wordStat.getValue());
+		}
 	}
 }
