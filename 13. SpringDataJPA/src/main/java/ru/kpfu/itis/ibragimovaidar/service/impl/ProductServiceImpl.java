@@ -9,8 +9,11 @@ import ru.kpfu.itis.ibragimovaidar.repository.CategoryRepository;
 import ru.kpfu.itis.ibragimovaidar.repository.ProductRepository;
 import ru.kpfu.itis.ibragimovaidar.service.ProductService;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static ru.kpfu.itis.ibragimovaidar.dto.ProductDto.from;
 
@@ -20,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
+	private final Validator validator;
 
 	@Override
 	public Optional<ProductDto> findById(Long id) {
@@ -29,6 +33,12 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	@Override
 	public ProductDto save(Long categoryId, ProductDto productDto) {
+		var violations = validator.validate(productDto);
+		if (!violations.isEmpty()){
+			for (var violation : violations) {
+				System.out.println(violation.getMessage());
+			}
+		}
 		var category = categoryRepository.findById(categoryId).orElseThrow();
 		var newProduct = Product.builder()
 				.name(productDto.getName())
@@ -36,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
 				.price(productDto.getPrice())
 				.category(category)
 				.build();
+
 		return from(productRepository.save(newProduct));
 	}
 

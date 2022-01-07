@@ -2,6 +2,7 @@ package ru.kpfu.itis.ibragimovaidar.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.hibernate.validator.internal.engine.ValidatorFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.spi.ConfigurationState;
 import java.util.Properties;
 
 @Configuration
@@ -88,5 +93,10 @@ public class ApplicationConfig {
 		hikariConfig.setPassword(password);
 		hikariConfig.setDriverClassName(driver);
 		return hikariConfig;
+	}
+
+	@Bean
+	public Validator validator(){
+		return Validation.buildDefaultValidatorFactory().getValidator();
 	}
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.kpfu.itis.ibragimovaidar.model.Product;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class ProductDto {
 
 	private Long id;
+	@NotNull(message = "name must not be null")
 	private String name;
 	private Integer price;
 	private String description;
